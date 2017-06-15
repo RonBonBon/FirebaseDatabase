@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             providers.add(google);
 
             Intent intent = AuthUI.getInstance().createSignInIntentBuilder().
-                    setLogo(R.drawable.logo400).setProviders(providers).build();
+                    setLogo(R.drawable.logo100).setProviders(providers).build();
             startActivity(intent);
         }
 
