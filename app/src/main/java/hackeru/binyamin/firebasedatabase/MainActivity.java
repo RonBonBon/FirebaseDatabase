@@ -32,19 +32,28 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+    FirebaseAuth.AuthStateListener mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+        @Override
+        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user == null) {
+                List<AuthUI.IdpConfig> providers = new ArrayList<>();
+
+                AuthUI.IdpConfig email = new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build();
+                AuthUI.IdpConfig google = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
+
+                providers.add(email);
+                providers.add(google);
+
+                Intent intent = AuthUI.getInstance().createSignInIntentBuilder().
+                        setLogo(R.drawable.logo100).setProviders(providers).build();
+                startActivity(intent);
+            }
+        }
+    };
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
 
     @Override
@@ -54,22 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user == null) {
-            List<AuthUI.IdpConfig> providers = new ArrayList<>();
-
-            AuthUI.IdpConfig email = new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build();
-            AuthUI.IdpConfig google = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
-
-            providers.add(email);
-            providers.add(google);
-
-            Intent intent = AuthUI.getInstance().createSignInIntentBuilder().
-                    setLogo(R.drawable.logo100).setProviders(providers).build();
-            startActivity(intent);
-        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -93,6 +86,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseAuth.getInstance().addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FirebaseAuth.getInstance().removeAuthStateListener(mAuthStateListener);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,18 +113,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        switch (id) {
+            case R.id.action_settings:
+                return true;
 
-        if (id == R.id.action_sign_out) {
-            AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-
-                }
-            });
-            return true;
+            case R.id.action_sign_out:
+                AuthUI.getInstance().signOut(this);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
