@@ -1,5 +1,6 @@
 package hackeru.binyamin.firebasedatabase;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +52,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        if (user == null) {
+            List<AuthUI.IdpConfig> providers = new ArrayList<>();
+
+
+
+            Intent intent = AuthUI.getInstance().createSignInIntentBuilder().
+                    setLogo(R.drawable.logo).setProviders(providers).build();
+        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
