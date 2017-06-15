@@ -57,10 +57,15 @@ public class MainActivity extends AppCompatActivity {
         if (user == null) {
             List<AuthUI.IdpConfig> providers = new ArrayList<>();
 
+            AuthUI.IdpConfig email = new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build();
+            AuthUI.IdpConfig google = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
 
+            providers.add(email);
+            providers.add(google);
 
             Intent intent = AuthUI.getInstance().createSignInIntentBuilder().
                     setLogo(R.drawable.logo).setProviders(providers).build();
+            startActivity(intent);
         }
 
         // Create the adapter that will return a fragment for each of the three
