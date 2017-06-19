@@ -10,11 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
@@ -56,7 +61,86 @@ public class ChatFragment extends Fragment {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance();
 
+        //readFromDB();
+        //readFromDbOnce();
+        readIncremental();
         return view;
+    }
+
+    private void readFromDB() {
+        //Non Relational Database
+        //1) get a reference to table (case sensitive)
+        DatabaseReference chatRef = mDatabase.getReference("ChatItems");
+        //2) add a listener for the data
+        //Once -> get all the table
+        //each change -> update all the data
+        chatRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot queryResult) {
+                //iter
+                for (DataSnapshot row : queryResult.getChildren()) {
+                    ChatItem item = row.getValue(ChatItem.class);
+                    Toast.makeText(getContext(), item.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void readFromDbOnce() {
+        //1) ref to the table
+        DatabaseReference chatRef = mDatabase.getReference("ChatItems");
+        //2) add a listener
+        chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot row : dataSnapshot.getChildren()) {
+                    ChatItem chatItem = row.getValue(ChatItem.class);
+                    Toast.makeText(getContext(), chatItem.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        //2.1) inside the listener -> interate over the data and use getValue()
+    }
+
+    private void readIncremental() {
+        DatabaseReference chatTable = mDatabase.getReference("ChatItems");
+        chatTable.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ChatItem chatItem = dataSnapshot.getValue(ChatItem.class);
+                Toast.makeText(getContext(), chatItem.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
