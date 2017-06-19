@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
@@ -186,6 +187,7 @@ public class ChatFragment extends Fragment {
         @Override
         protected void populateViewHolder(ChatViewHolder viewHolder, ChatItem model, int position) {
             viewHolder.tvMessage.setText(model.getMessage());
+            Picasso.with(viewHolder.tvMessage.getContext()).load(model.getProfileImage()).into(viewHolder.ivProfile);
         }
 
         //ViewHolder findViewById and hold the Views as fields.
