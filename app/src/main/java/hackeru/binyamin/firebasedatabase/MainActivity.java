@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_android_black_24dp);
+        //tabLayout.getTabAt(0).setIcon(R.drawable.ic_android_black_24dp);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
             return 3;
         }
 
-/*
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
@@ -200,6 +199,5 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
-*/
     }
 }
