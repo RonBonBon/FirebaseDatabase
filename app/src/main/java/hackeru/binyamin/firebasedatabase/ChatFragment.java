@@ -1,6 +1,7 @@
 package hackeru.binyamin.firebasedatabase;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -10,13 +11,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import hackeru.binyamin.firebasedatabase.models.ChatItem;
 
 
 /**
@@ -24,6 +30,8 @@ import butterknife.Unbinder;
  */
 public class ChatFragment extends Fragment {
 
+    FirebaseUser mUser;
+    FirebaseDatabase mDatabase;
 
     @BindView(R.id.etMessage)
     EditText etMessage;
@@ -44,6 +52,10 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance();
+
         return view;
     }
 
@@ -55,18 +67,20 @@ public class ChatFragment extends Fragment {
 
     @OnClick(R.id.btnSend)
     public void onViewClicked() {
-        //get reference to a table in the database
-        DatabaseReference chatTable = FirebaseDatabase.getInstance().getReference("Fruit")
-                .child("Apple").child("Pinky-Lady");
+        String uid = mUser.getUid();
+        Uri photoUrl = mUser.getPhotoUrl();
 
-        chatTable.setValue(etMessage.getText().toString());
+        String img = null;
+        if (photoUrl != null) {
+            img = photoUrl.toString();
+        }
+
+        String message = etMessage.getText().toString();
+
+        ChatItem item = new ChatItem(message, uid, img, new Date().toString());
+
+        mDatabase.getReference("ChatItems").push().setValue(item);
 
         etMessage.setText(null);
-/*
-        //add a new row to the table
-        DatabaseReference newRow = chatTable.push();
-        //setValue(et.getText().toString())
-        newRow.setValue(etMessage.getText().toString());
-*/
     }
 }

@@ -1,4 +1,4 @@
-package hackeru.binyamin.firebasedatabase;
+package hackeru.binyamin.firebasedatabase.models;
 
 /**
  * A Chat Item.
@@ -9,7 +9,7 @@ package hackeru.binyamin.firebasedatabase;
 public class ChatItem {
     private String message;
     private String userID;
-    private String profileImage;
+    private String profileImage = "http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg";
     private String date;
 
     //Default Constructor for robots
@@ -20,7 +20,8 @@ public class ChatItem {
     public ChatItem(String message, String userID, String profileImage, String date) {
         this.message = message;
         this.userID = userID;
-        this.profileImage = profileImage;
+        if (profileImage != null)
+            this.profileImage = profileImage;
         this.date = date;
     }
 
@@ -45,7 +46,8 @@ public class ChatItem {
     }
 
     public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
+        if (profileImage != null)
+            this.profileImage = profileImage;
     }
 
     public String getDate() {
@@ -54,5 +56,15 @@ public class ChatItem {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "ChatItem{" +
+                "message='" + message + '\'' +
+                ", userID='" + userID + '\'' +
+                ", profileImage='" + profileImage + '\'' +
+                ", date='" + date + '\'' +
+                '}';
     }
 }
