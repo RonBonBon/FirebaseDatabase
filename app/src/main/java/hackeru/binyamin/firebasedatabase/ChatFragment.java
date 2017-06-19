@@ -56,10 +56,17 @@ public class ChatFragment extends Fragment {
     @OnClick(R.id.btnSend)
     public void onViewClicked() {
         //get reference to a table in the database
-        DatabaseReference chatTable = FirebaseDatabase.getInstance().getReference("Chat");
+        DatabaseReference chatTable = FirebaseDatabase.getInstance().getReference("Fruit")
+                .child("Apple").child("Pinky-Lady");
+
+        chatTable.setValue(etMessage.getText().toString());
+
+        etMessage.setText(null);
+/*
         //add a new row to the table
         DatabaseReference newRow = chatTable.push();
         //setValue(et.getText().toString())
         newRow.setValue(etMessage.getText().toString());
+*/
     }
 }
