@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -19,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
@@ -166,5 +170,37 @@ public class ChatFragment extends Fragment {
         mDatabase.getReference("ChatItems").push().setValue(item);
 
         etMessage.setText(null);
+    }
+
+    public static class ChatAdapter extends FirebaseRecyclerAdapter<ChatItem, ChatAdapter.ChatViewHolder>{
+
+        /**
+         * @param modelClass      Firebase will marshall the data at a location into an instance of a class that you provide
+         * @param modelLayout     This is the layout used to represent a single item in the list. You will be responsible for populating an
+         *                        instance of the corresponding view with the data from an instance of modelClass.
+         * @param viewHolderClass The class that hold references to all sub-views in an instance modelLayout.
+         * @param ref             The Firebase location to watch for data changes. Can also be a slice of a location, using some
+         *                        combination of {@code limit()}, {@code startAt()}, and {@code endAt()}.
+         */
+        public ChatAdapter() {
+            super(ChatItem.class, R.layout.chat_item, ChatViewHolder.class, FirebaseDatabase.getInstance().getReference("ChatItems"));
+        }
+
+        @Override
+        protected void populateViewHolder(ChatViewHolder viewHolder, ChatItem model, int position) {
+            viewHolder.tvMessage.setText(model.getMessage());
+        }
+
+        //ViewHolder findViewById and hold the Views as fields.
+        public static class ChatViewHolder extends RecyclerView.ViewHolder {
+            ImageView ivProfile;
+            TextView tvMessage;
+
+            public ChatViewHolder(View itemView) {
+                super(itemView);
+                ivProfile = (ImageView) itemView.findViewById(R.id.ivProfile);
+                tvMessage = (TextView) itemView.findViewById(R.id.tvMessage);
+            }
+        }
     }
 }
