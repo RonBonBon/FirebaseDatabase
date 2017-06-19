@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "305821418443",
-    "firebase_url": "https://fir-database-ab209.firebaseio.com",
-    "project_id": "fir-database-ab209",
-    "storage_bucket": "fir-database-ab209.appspot.com"
+    "project_number": "830805463145",
+    "firebase_url": "https://fir-database-dc465.firebaseio.com",
+    "project_id": "fir-database-dc465",
+    "storage_bucket": "fir-database-dc465.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:305821418443:android:90ffa4ecd3d476eb",
+        "mobilesdk_app_id": "1:830805463145:android:90ffa4ecd3d476eb",
         "android_client_info": {
           "package_name": "hackeru.binyamin.firebasedatabase"
         }
       },
       "oauth_client": [
         {
-          "client_id": "305821418443-tdin1sidb2q2dtfoagfpdpng4h2dgqv4.apps.googleusercontent.com",
+          "client_id": "830805463145-o3cietq1937i2srackndvmibivcltvpd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "hackeru.binyamin.firebasedatabase",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "305821418443-98ug93sn9gu1npftjklgpmt84nsu4fv1.apps.googleusercontent.com",
+          "client_id": "830805463145-b6005gsfjt7bq8dqmquir1i3iopfikm1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAgh6anQD1bo7Z1w1RhVZvAwJ9b-1seL6Q"
+          "current_key": "AIzaSyDO_LVtuu1oFs5FIfAJ6W4-4wqy7S40jpk"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "305821418443-98ug93sn9gu1npftjklgpmt84nsu4fv1.apps.googleusercontent.com",
+              "client_id": "830805463145-b6005gsfjt7bq8dqmquir1i3iopfikm1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
