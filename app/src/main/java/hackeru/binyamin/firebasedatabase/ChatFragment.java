@@ -163,6 +163,7 @@ public class ChatFragment extends Fragment {
     public void onViewClicked() {
         String uid = mUser.getUid();
         Uri photoUrl = mUser.getPhotoUrl();
+        String userName = mUser.getDisplayName();
 
         String img = null;
         if (photoUrl != null) {
@@ -187,6 +188,7 @@ public class ChatFragment extends Fragment {
         @Override
         protected void populateViewHolder(ChatViewHolder viewHolder, ChatItem model, int position) {
             viewHolder.tvMessage.setText(model.getMessage());
+            //viewHolder.tvMessage.setText(us);
             Picasso.with(viewHolder.tvMessage.getContext()).load(model.getProfileImage()).into(viewHolder.ivProfile);
         }
 
